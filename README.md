@@ -1,12 +1,73 @@
-# React + Vite
+# React Films
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple React application that fetches and displays movies from the OMDb API. The project is built using Vite and Materialize CSS and deployed to GitHub Pages.
 
-Currently, two official plugins are available:
+## Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[https://rubaka-pl.github.io/react-films/](https://rubaka-pl.github.io/react-films/)
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* Search for movies by title
+* Filter results by type (All, Movie, Series)
+* Responsive Materialize CSS-based UI
+* Fallback images for missing posters
+
+## Technologies
+
+* React
+* Vite
+* Materialize CSS
+
+## Installation
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/rubaka-pl/react-films.git
+   cd react-films
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. **Create environment variables:**
+
+   Copy the example file and fill in your OMDb API key:
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+   Edit `.env.local` and set:
+
+   ```dotenv
+   VITE_OMDB_API_URL=https://www.omdbapi.com
+   VITE_OMDB_API_KEY=your_api_key_here
+   ```
+
+4. **Run in development mode:**
+
+   ```bash
+   npm run dev
+
+   ```
+
+5. **Build for production and deploy:**
+
+   ```bash
+   npm run deploy
+
+   ```
+
+## Environment Variables
+
+* `VITE_OMDB_API_URL`: Base URL for the OMDb API (e.g., `https://www.omdbapi.com`).
+* `VITE_OMDB_API_KEY`: Your OMDb API key. You can get one from [http://www.omdbapi.com/apikey.aspx](http://www.omdbapi.com/apikey.aspx).
+
+

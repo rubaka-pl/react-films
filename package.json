@@ -3,13 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",  
-  "homepage": "https://rubaka-pl.github.io/react-films",
+  "homepage": "https://rubaka-pl.github.io/react-films/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "gh-pages -d build"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "materialize-css": "^1.0.0",
