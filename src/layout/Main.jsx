@@ -3,6 +3,9 @@ import Movies from '../components/Movies';
 import Preloader from '../components/Preloader';
 import Search from '../components/Search';
 
+const base = import.meta.env.VITE_OMDB_API_URL;
+const key = import.meta.env.VITE_OMDB_API_KEY;
+
 export default class Main extends Component {
   state = {
     movies: [],
@@ -18,7 +21,7 @@ export default class Main extends Component {
   searchMovies = (str) => {
     this.setState({ loading: true });
     fetch(
-      `https://www.omdbapi.com/?apikey=c67a55c6&s=${encodeURIComponent(str)}`
+      `${base}/?apikey=${encodeURIComponent(key)}&s=${encodeURIComponent(str)}`
     )
       .then((res) => res.json())
       .then((data) =>
