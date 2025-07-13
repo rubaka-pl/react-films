@@ -2,7 +2,7 @@
   "name": "vite-project",
   "private": true,
   "version": "0.0.0",
-  "type": "module",  
+  "type": "module",
   "homepage": "https://rubaka-pl.github.io/react-films/",
   "scripts": {
     "dev": "vite",

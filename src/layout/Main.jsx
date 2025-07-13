@@ -11,50 +11,62 @@ export default class Main extends Component {
     movies: [],
     loading: true,
     type: 'all',
+    page: 1,
+    totalResults: 0,
   };
 
   componentDidMount() {
     this.searchMovies('Gintama');
   }
 
-  // теперь searchMovies только по строке
-  searchMovies = (str) => {
-    this.setState({ loading: true });
+  searchMovies = (query, type = 'all', page = 1) => {
+    this.setState({ loading: true, query, type, page });
+
+    const typeParam = type !== 'all' ? `&type=${type}` : '';
+
     fetch(
-      `${base}/?apikey=${encodeURIComponent(key)}&s=${encodeURIComponent(str)}`
+      `${base}/?apikey=${encodeURIComponent(key)}&s=${encodeURIComponent(
+        query
+      )}${typeParam}&page=${page}`
     )
       .then((res) => res.json())
       .then((data) =>
-        this.setState({ movies: data.Search || [], loading: false })
+        this.setState({
+          movies: data.Search || [],
+          totalResults: parseInt(data.totalResults, 9) || 0,
+          loading: false,
+        })
+      )
+      .catch(() =>
+        this.setState({ movies: [], totalResults: 0, loading: false })
       );
   };
 
-  // обработчик смены фильтра
   handleTypeChange = (e) => {
-    this.setState({ type: e.target.value });
+    const newType = e.target.value;
+    this.searchMovies(this.state.query, newType, 1);
   };
 
   render() {
-    const { movies, type, loading } = this.state;
-
-    // отфильтровываем фильмы по выбранному типу
-    const visibleMovies = movies.filter((m) => {
-      if (type === 'all') return true;
-      return m.Type === type;
-    });
+    const { totalResults, type, page, loading } = this.state;
+    const totalPages = Math.ceil(totalResults / 9);
 
     return (
       <main className='container content'>
-        {/* Поиск по строке */}
-        <Search searchMovies={this.searchMovies} />
+        <Search
+          query={this.state.query}
+          type={type}
+          searchMovies={(q) => this.searchMovies(q, type, 1)}
+        />
 
-        {/* Фильтр по типу */}
-        <div className='filter-type'>
-          <label htmlFor='type-select'>Filter by type:</label>
+        <div className='filter-type' style={{ margin: '1rem 0' }}>
+          <span style={{ marginRight: '1rem' }}>Results: {totalResults}</span>
+
           <select
-            id='type-select'
             value={type}
-            onChange={this.handleTypeChange}
+            onChange={(e) =>
+              this.searchMovies(this.state.query, e.target.value, 1)
+            }
           >
             <option value='all'>All</option>
             <option value='movie'>Movie</option>
@@ -63,8 +75,36 @@ export default class Main extends Component {
           </select>
         </div>
 
-        {/* Рендерим либо список, либо прелоадер */}
-        {loading ? <Preloader /> : <Movies movies={visibleMovies} />}
+        {loading ? <Preloader /> : <Movies movies={this.state.movies} />}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className='pagination' style={{ marginTop: '2rem' }}>
+            <button
+              className='btn'
+              disabled={page <= 1}
+              onClick={() =>
+                this.searchMovies(this.state.query, type, page - 1)
+              }
+            >
+              Prev
+            </button>
+
+            <span style={{ margin: '0 1rem' }}>
+              Page {page} of {totalPages}
+            </span>
+
+            <button
+              className='btn'
+              disabled={page >= totalPages}
+              onClick={() =>
+                this.searchMovies(this.state.query, type, page + 1)
+              }
+            >
+              Next
+            </button>
+          </div>
+        )}
       </main>
     );
   }
